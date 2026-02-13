@@ -1,0 +1,8 @@
+[project]
+name = "claude-agent-api"
+version = "0.1.0"
+description = "Claude Agent SDK backend on Cloud Run with Firestore sessions"
+requires-python = ">=3.12"
+
+[tool.ruff]
+line-length = 100
