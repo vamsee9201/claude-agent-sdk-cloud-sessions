@@ -7,7 +7,7 @@ Claude Agent SDK (Python) backend deployed on Google Cloud Run with Firestore-ba
 ## Tech Stack
 
 - **Runtime**: Python 3.12, FastAPI, Uvicorn
-- **Agent**: `claude-agent-sdk` (Python) — uses bundled CLI internally
+- **Agent**: `claude-agent-sdk` (Python) - uses bundled CLI internally
 - **Database**: Google Cloud Firestore (Native mode)
 - **Persistence**: GCS FUSE volume mount for `~/.claude/` session data
 - **Deployment**: Google Cloud Run (gen2, source deploy)
@@ -34,9 +34,9 @@ When using `query()` with SDK MCP servers (`create_sdk_mcp_server`), you **must*
 
 `permission_mode="bypassPermissions"` maps to `--dangerously-skip-permissions` in the CLI, which **refuses to run as root**. The Dockerfile creates and switches to `appuser`.
 
-### Bundled CLI — do not install separately
+### Bundled CLI - do not install separately
 
-The `claude-agent-sdk` pip package bundles its own CLI at `claude_agent_sdk/_bundled/claude`. Do **not** install Claude Code separately via `curl -fsSL https://claude.ai/install.sh` — it's unnecessary and can cause version conflicts.
+The `claude-agent-sdk` pip package bundles its own CLI at `claude_agent_sdk/_bundled/claude`. Do **not** install Claude Code separately via `curl -fsSL https://claude.ai/install.sh` - it's unnecessary and can cause version conflicts.
 
 ### GCS FUSE volume mount for session persistence
 
@@ -44,8 +44,8 @@ The SDK stores session data at `~/.claude/` on the container filesystem. Cloud R
 
 ### Two-layer persistence
 
-1. **SDK internal** (`~/.claude/` → GCS FUSE) — used by the CLI for conversation context and `resume`, persisted to GCS bucket
-2. **Firestore** — our read-optimized mirror for the API layer (history, costs, session listing)
+1. **SDK internal** (`~/.claude/` → GCS FUSE) - used by the CLI for conversation context and `resume`, persisted to GCS bucket
+2. **Firestore** - our read-optimized mirror for the API layer (history, costs, session listing)
 
 Session data survives container recycling via GCS FUSE. Firestore data is never lost.
 
@@ -64,7 +64,7 @@ app/
 │   ├── sessions.py      # GET /sessions/{session_id}
 │   └── health.py        # GET /health
 ├── services/
-│   ├── agent.py         # Claude Agent SDK query() — CORE FILE
+│   ├── agent.py         # Claude Agent SDK query() - CORE FILE
 │   └── firestore.py     # Firestore session CRUD
 ├── models/
 │   └── schemas.py       # Pydantic request/response models
@@ -104,4 +104,4 @@ curl -X POST https://<YOUR_SERVICE_URL>/chat \
 
 - `tools=[]` disables ALL built-in tools (Bash, Read, Write, etc.). Only set this if you truly want to restrict Claude to just your MCP tools. The default (`None`) keeps standard tools available.
 - The `/chat` endpoint blocks until the full agent response completes (3-30s). No streaming to the client yet.
-- Two simultaneous requests on the same session may race — no concurrent session safety.
+- Two simultaneous requests on the same session may race - no concurrent session safety.

@@ -1,8 +1,8 @@
-# Claude Agent SDK — Cloud Sessions
+# Claude Agent SDK - Cloud Sessions
 
-The [Claude Agent SDK](https://github.com/anthropics/claude-agent-sdk-python) is the same agentic runtime that powers [Claude Code](https://docs.anthropic.com/en/docs/claude-code). It runs Claude in a reasoning loop where the model can think, call tools, observe results, and decide what to do next — autonomously chaining multiple steps until the task is complete. Unlike a single API call, the agent keeps going: it reads files, runs commands, calls external services via MCP, and self-corrects when things go wrong. This is the same architecture behind Claude Code's ability to navigate entire codebases and ship working code.
+The [Claude Agent SDK](https://github.com/anthropics/claude-agent-sdk-python) is the same agentic runtime that powers [Claude Code](https://docs.anthropic.com/en/docs/claude-code). It runs Claude in a reasoning loop where the model can think, call tools, observe results, and decide what to do next - autonomously chaining multiple steps until the task is complete. Unlike a single API call, the agent keeps going: it reads files, runs commands, calls external services via MCP, and self-corrects when things go wrong. This is the same architecture behind Claude Code's ability to navigate entire codebases and ship working code.
 
-This project wraps the Claude Agent SDK behind a REST API so that any client — a web app, mobile app, or another service — can interact with a fully agentic Claude over HTTP. The agent reasons, uses tools, and maintains multi-turn conversations, all through a simple `POST /chat` endpoint. This is how knowledge work gets automated: instead of building brittle pipelines, you give Claude the tools and let the agent figure out the steps.
+This project wraps the Claude Agent SDK behind a REST API so that any client - a web app, mobile app, or another service - can interact with a fully agentic Claude over HTTP. The agent reasons, uses tools, and maintains multi-turn conversations, all through a simple `POST /chat` endpoint. This is how knowledge work gets automated: instead of building brittle pipelines, you give Claude the tools and let the agent figure out the steps.
 
 ## Live Demo
 
@@ -10,9 +10,9 @@ Try it out: **[claude-agent-api-376960238767.us-central1.run.app](https://claude
 
 ![Demo Screenshot](demo_screenshot.png)
 
-The built-in chat UI shows tool call details, session persistence, and cost/duration per response — no separate frontend needed.
+The built-in chat UI shows tool call details, session persistence, and cost/duration per response - no separate frontend needed.
 
-Persistent chat sessions are critical for this to work in production. Users expect to pick up where they left off — whether they're debugging a problem across multiple messages, building on previous analysis, or coming back the next day. Without session persistence, every request starts from scratch and the agent loses all context. This project solves that with a two-layer approach: the SDK's internal session store (`~/.claude/`) is mounted to a GCS bucket via FUSE so it survives container restarts, while Firestore mirrors the conversation history for fast reads and session listing by the API layer.
+Persistent chat sessions are critical for this to work in production. Users expect to pick up where they left off - whether they're debugging a problem across multiple messages, building on previous analysis, or coming back the next day. Without session persistence, every request starts from scratch and the agent loses all context. This project solves that with a two-layer approach: the SDK's internal session store (`~/.claude/`) is mounted to a GCS bucket via FUSE so it survives container restarts, while Firestore mirrors the conversation history for fast reads and session listing by the API layer.
 
 ## Architecture
 
@@ -62,7 +62,7 @@ Persistent chat sessions are critical for this to work in production. Users expe
 
 1. Client sends `POST /chat` with a message (and optionally a `session_id` to resume)
 2. FastAPI passes the message to the Claude Agent SDK's `query()` function
-3. The SDK runs Claude in an agentic loop — Claude thinks, decides to call tools (like the weather MCP server), observes results, and continues until it has a final answer
+3. The SDK runs Claude in an agentic loop - Claude thinks, decides to call tools (like the weather MCP server), observes results, and continues until it has a final answer
 4. The response, tool calls, and session ID are saved to Firestore
 5. The SDK's internal session state is persisted to GCS via FUSE mount, so resuming works even after the container is recycled
 
@@ -133,7 +133,7 @@ pip install -r requirements.txt
 
 # 2. Configure
 cp .env.example .env
-# Edit .env — set ANTHROPIC_API_KEY and GCP_PROJECT_ID
+# Edit .env - set ANTHROPIC_API_KEY and GCP_PROJECT_ID
 
 # 3. Run
 uvicorn app.main:app --reload
@@ -240,8 +240,8 @@ claude-agent-sdk-cloud-sessions/
 
 | Variable | Required | Default | Description |
 |---|---|---|---|
-| `ANTHROPIC_API_KEY` | Yes | — | Anthropic API key |
-| `GCP_PROJECT_ID` | Yes | — | Google Cloud project ID |
+| `ANTHROPIC_API_KEY` | Yes | - | Anthropic API key |
+| `GCP_PROJECT_ID` | Yes | - | Google Cloud project ID |
 | `FIRESTORE_COLLECTION` | No | `sessions` | Firestore collection name |
 | `CLAUDE_MAX_TURNS` | No | `10` | Max agent conversation turns |
 | `CLAUDE_MAX_BUDGET_USD` | No | `0.50` | Max spend per request |
@@ -253,4 +253,4 @@ claude-agent-sdk-cloud-sessions/
 - **Blocking responses**: `POST /chat` blocks until the full agent response completes (typically 3-30s). A future improvement would add SSE streaming.
 - **No concurrent session safety**: Two simultaneous requests on the same session may race.
 - **Dummy weather tool**: Returns hardcoded data. Replace with a real API for production.
-- **No auth**: No user authentication — this is a prototype.
+- **No auth**: No user authentication - this is a prototype.

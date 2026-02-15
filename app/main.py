@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 async def lifespan(app: FastAPI):
     logger.info("Starting up claude-agent-api")
     yield
-    logger.info("Shutting down — closing Firestore client")
+    logger.info("Shutting down - closing Firestore client")
     await session_store.close()
 
 
