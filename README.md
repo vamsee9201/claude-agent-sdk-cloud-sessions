@@ -4,7 +4,13 @@ The [Claude Agent SDK](https://github.com/anthropics/claude-agent-sdk-python) is
 
 This project wraps the Claude Agent SDK behind a REST API so that any client — a web app, mobile app, or another service — can interact with a fully agentic Claude over HTTP. The agent reasons, uses tools, and maintains multi-turn conversations, all through a simple `POST /chat` endpoint. This is how knowledge work gets automated: instead of building brittle pipelines, you give Claude the tools and let the agent figure out the steps.
 
-Visit the service URL in a browser to open the built-in chat UI — no separate frontend needed. The UI shows tool call details, session persistence, and cost/duration per response.
+## Live Demo
+
+Try it out: **[claude-agent-api-376960238767.us-central1.run.app](https://claude-agent-api-376960238767.us-central1.run.app)**
+
+![Demo Screenshot](demo_screenshot.png)
+
+The built-in chat UI shows tool call details, session persistence, and cost/duration per response — no separate frontend needed.
 
 Persistent chat sessions are critical for this to work in production. Users expect to pick up where they left off — whether they're debugging a problem across multiple messages, building on previous analysis, or coming back the next day. Without session persistence, every request starts from scratch and the agent loses all context. This project solves that with a two-layer approach: the SDK's internal session store (`~/.claude/`) is mounted to a GCS bucket via FUSE so it survives container restarts, while Firestore mirrors the conversation history for fast reads and session listing by the API layer.
 
