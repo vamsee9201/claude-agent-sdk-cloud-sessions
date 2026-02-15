@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     FIRESTORE_COLLECTION: str = "sessions"
     CLAUDE_MAX_TURNS: int = 10
     CLAUDE_MAX_BUDGET_USD: float = 0.50
+    CLAUDE_MODEL: str = "claude-haiku-4-5-20251001"
     CLAUDE_SYSTEM_PROMPT: str = "You are a helpful assistant with access to weather information."
     PORT: int = 8080
 

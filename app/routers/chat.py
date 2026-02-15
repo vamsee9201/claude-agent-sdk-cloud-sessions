@@ -1,7 +1,9 @@
 import logging
 import time
+from pathlib import Path
 
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import HTMLResponse
 
 from app.models.schemas import ChatRequest, ChatResponse
 from app.services.agent import run_agent
@@ -9,6 +11,13 @@ from app.services.firestore import session_store
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
+
+_index_html = (Path(__file__).resolve().parent.parent / "static" / "index.html").read_text()
+
+
+@router.get("/", response_class=HTMLResponse)
+async def index():
+    return _index_html
 
 
 @router.post("/chat", response_model=ChatResponse)

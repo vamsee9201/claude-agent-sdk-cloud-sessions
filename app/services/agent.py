@@ -54,6 +54,7 @@ class AgentResponse:
 
 def _build_options() -> ClaudeAgentOptions:
     return ClaudeAgentOptions(
+        model=settings.CLAUDE_MODEL,
         system_prompt=settings.CLAUDE_SYSTEM_PROMPT,
         max_turns=settings.CLAUDE_MAX_TURNS,
         max_budget_usd=settings.CLAUDE_MAX_BUDGET_USD,
